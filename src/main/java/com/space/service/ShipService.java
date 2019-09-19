@@ -4,6 +4,8 @@ import com.space.controller.ShipOrder;
 import com.space.model.Ship;
 import com.space.model.ShipType;
 import com.space.repository.ShipRepository;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +21,7 @@ public class ShipService {
 
     private final ShipRepository shipRepository;
 
+    @Contract(pure = true)
     @Autowired
     public ShipService(ShipRepository shipRepository) {
         this.shipRepository = shipRepository;
@@ -38,7 +41,7 @@ public class ShipService {
             Integer maxCrewSize,
             Double minRating,
             Double maxRating,
-            ShipOrder order,
+            @NotNull ShipOrder order,
             Integer pageNumber,
             Integer pageSize){
         Specification spec = createSpecification(id, name, planet, shipType, after, before, isUsed,
@@ -83,7 +86,7 @@ public class ShipService {
     }
 
 
-    public Ship updateShip(Ship ship){
+    public Ship updateShip(@NotNull Ship ship){
         Double rating = calcRating(ship.getSpeed(), ship.getProdDate().getTime(), ship.getUsed());
         ship.setRating(rating);
         return shipRepository.save(ship);

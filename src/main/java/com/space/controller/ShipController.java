@@ -3,6 +3,7 @@ package com.space.controller;
 import com.space.model.Ship;
 import com.space.model.ShipType;
 import com.space.service.ShipService;
+import org.jetbrains.annotations.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ public class ShipController {
 
     private final ShipService shipService;
 
+    @Contract(pure = true)
     @Autowired
     public ShipController(ShipService shipService) {
         this.shipService = shipService;
@@ -101,10 +103,19 @@ public class ShipController {
         if(prodDateLongText == null || prodDateLongText.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Long prodDateLong = Long.parseLong(prodDateLongText);
+
+        Long prodDateLong = 0L;
+        try {
+            prodDateLong = Long.parseLong(prodDateLongText);
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Long date2800Long = new GregorianCalendar(2800, 0, 1).getTimeInMillis();
+        Long date3200Long = new GregorianCalendar(3020, 0, 1).getTimeInMillis();
         if(prodDateLong < 0 ||
-                prodDateLong < new GregorianCalendar(2800, 0, 1).getTimeInMillis() ||
-                prodDateLong >= new GregorianCalendar(3020, 0, 1).getTimeInMillis()) {
+                prodDateLong < date2800Long ||
+                prodDateLong >= date3200Long) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -118,7 +129,14 @@ public class ShipController {
         if(speedText == null || speedText.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Double speed = Double.parseDouble(speedText);
+
+        Double speed = 0D;
+        try {
+            speed = Double.parseDouble(speedText);
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         speed = Math.round(speed * 100)/100.0;
         if(speed < 0.01d || speed > 0.99d) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -128,7 +146,14 @@ public class ShipController {
         if(crewSizeText == null || crewSizeText.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Integer crewSize = Integer.parseInt(crewSizeText);
+
+        Integer crewSize = 0;
+        try {
+            crewSize = Integer.parseInt(crewSizeText);
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         if(crewSize < 1 || crewSize > 9999) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -202,10 +227,18 @@ public class ShipController {
                 if (prodDateLongText.isEmpty()) {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 } else {
-                    Long prodDateLong = Long.parseLong(prodDateLongText);
+                    Long prodDateLong = 0L;
+                    try {
+                        prodDateLong = Long.parseLong(prodDateLongText);
+                    } catch (NumberFormatException e) {
+                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    }
+
+                    Long date2800Long = new GregorianCalendar(2800, 0, 1).getTimeInMillis();
+                    Long date3200Long = new GregorianCalendar(3020, 0, 1).getTimeInMillis();
                     if (prodDateLong < 0 ||
-                            prodDateLong < new GregorianCalendar(2800, 0, 1).getTimeInMillis() ||
-                            prodDateLong >= new GregorianCalendar(3020, 0, 1).getTimeInMillis()) {
+                            prodDateLong < date2800Long ||
+                            prodDateLong >= date3200Long) {
                         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                     } else {
                         ship.setProdDate(new Date(prodDateLong));
@@ -224,7 +257,13 @@ public class ShipController {
                 if (speedText.isEmpty()) {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 } else {
-                    Double speed = Double.parseDouble(speedText);
+                    Double speed = 0D;
+                    try {
+                        speed = Double.parseDouble(speedText);
+                    } catch (NumberFormatException e) {
+                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    }
+
                     speed = Math.round(speed * 100)/100.0;
                     if (speed < 0.01d || speed > 0.99d) {
                         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -239,7 +278,13 @@ public class ShipController {
                 if (crewSizeText.isEmpty()) {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 } else {
-                    Integer crewSize = Integer.parseInt(crewSizeText);
+                    Integer crewSize = 0;
+                    try {
+                        crewSize = Integer.parseInt(crewSizeText);
+                    } catch (NumberFormatException e) {
+                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    }
+
                     if (crewSize < 1 || crewSize > 9999) {
                         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                     } else {

@@ -1,6 +1,8 @@
 package com.space.model;
 
 
+import org.jetbrains.annotations.Contract;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
@@ -24,9 +26,11 @@ public class Ship {
     private Integer crewSize;
     private Double rating;
 
+    @Contract(pure = true)
     public Ship() {
     }
 
+    @Contract(pure = true)
     public Ship(String name, String planet, ShipType shipType, Date prodDate, Boolean isUsed, Double speed, Integer crewSize, Double rating) {
         this.name = name;
         this.planet = planet;
@@ -110,6 +114,7 @@ public class Ship {
         this.rating = rating;
     }
 
+    @Contract(value = "null -> false", pure = true)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

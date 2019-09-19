@@ -1,6 +1,7 @@
 package com.space.service;
 
 import com.space.model.Ship;
+import org.jetbrains.annotations.Contract;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class ShipSpecificationsBuilder {
 
     private final List<SearchCriteria> params;
 
+    @Contract(pure = true)
     public ShipSpecificationsBuilder() {
         params = new ArrayList<SearchCriteria>();
     }
